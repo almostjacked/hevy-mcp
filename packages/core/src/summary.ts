@@ -1,6 +1,6 @@
-import type { Workout } from "./hevy-client";
-import { estimate1RM } from "./workouts";
-import { kgToLb, estLb } from "./units";
+import type { Workout } from "./hevy-client.js";
+import { estimate1RM } from "./workouts.js";
+import { kgToLb, estLb } from "./units.js";
 
 export interface WeeklyStats {
   week_start: string;

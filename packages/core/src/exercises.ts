@@ -1,4 +1,4 @@
-import type { ExerciseTemplate } from "./hevy-client";
+import type { ExerciseTemplate } from "./hevy-client.js";
 
 function bigrams(s: string): Map<string, number> {
   const m = new Map<string, number>();

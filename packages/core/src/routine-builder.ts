@@ -1,5 +1,5 @@
-import { KG_PER_LB, roundToIncrement } from "./units";
-import type { RoutinePayload } from "./hevy-client";
+import { KG_PER_LB, roundToIncrement } from "./units.js";
+import type { RoutinePayload } from "./hevy-client.js";
 
 export interface SetInput {
   type?: "warmup" | "normal" | "failure" | "dropset";

@@ -1,5 +1,5 @@
-import { HevyApiError, type Workout, type WorkoutSet, type WorkoutsPage, type ExerciseHistoryRow } from "./hevy-client";
-import { displayLb, estLb } from "./units";
+import { HevyApiError, type Workout, type WorkoutSet, type WorkoutsPage, type ExerciseHistoryRow } from "./hevy-client.js";
+import { displayLb, estLb } from "./units.js";
 
 export interface ExerciseSummary {
   title: string;
