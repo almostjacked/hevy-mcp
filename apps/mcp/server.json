@@ -1,0 +1,27 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.almostjacked/hevy-mcp",
+  "title": "Hevy (unofficial)",
+  "description": "Create Hevy routines and analyze your training from chat. Unofficial; BYO Hevy PRO API key.",
+  "repository": {
+    "url": "https://github.com/almostjacked/hevy-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@almostjacked/hevy-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://hevy-coach.ajwallacemusic.workers.dev/mcp"
+    }
+  ]
+}

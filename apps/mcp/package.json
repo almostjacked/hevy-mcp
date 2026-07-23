@@ -15,7 +15,8 @@
     "start": "node dist/main.js",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "build:mcpb": "node scripts/sync-versions.mjs && esbuild src/main.ts --bundle --platform=node --format=esm --outfile=mcpb/server/index.js --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\" && mcpb pack mcpb hevy-mcp.mcpb"
   },
   "dependencies": {
     "@almostjacked/hevy-mcp-core": "workspace:*",
@@ -25,7 +26,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@anthropic-ai/mcpb": "^2.1.2",
     "@types/node": "^22.0.0",
+    "esbuild": "^0.28.1",
     "typescript": "^5.5.0",
     "vitest": "^2.0.0",
     "wrangler": "^4.114.0"

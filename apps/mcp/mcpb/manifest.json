@@ -1,0 +1,40 @@
+{
+  "manifest_version": "0.2",
+  "name": "hevy-mcp",
+  "display_name": "Hevy (unofficial)",
+  "version": "0.1.0",
+  "description": "Design training programs in chat and create the routines directly in your Hevy account. Unofficial; requires a Hevy PRO API key.",
+  "author": {
+    "name": "AJ Wallace",
+    "email": "ajwallacemusic@gmail.com",
+    "url": "https://github.com/ajwallacemusic"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/almostjacked/hevy-mcp",
+  "icon": "icon.png",
+  "privacy_policies": [
+    "https://github.com/almostjacked/hevy-mcp#privacy-policy"
+  ],
+  "user_config": {
+    "hevy_api_key": {
+      "type": "string",
+      "title": "Hevy API key",
+      "description": "From hevy.com/settings?developer (Hevy PRO required). Stored locally by Claude Desktop; sent only to api.hevyapp.com.",
+      "sensitive": true,
+      "required": true
+    }
+  },
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/server/index.js"
+      ],
+      "env": {
+        "HEVY_API_KEY": "${user_config.hevy_api_key}"
+      }
+    }
+  }
+}
