@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hevy-mcp",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"]
+  // Required secrets (set after deploy):
+  //   npx wrangler secret put AUTH_TOKEN     — any long random string; becomes your Bearer token
+  //   npx wrangler secret put HEVY_API_KEY   — from hevy.com/settings?developer
+}

@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "description": "Unofficial MCP server for Hevy — stdio + self-host worker. Bring your own Hevy PRO API key.",
   "type": "module",
-  "bin": { "hevy-mcp": "dist/main.js" },
-  "files": ["dist"],
+  "bin": {
+    "hevy-mcp": "dist/main.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "node scripts/sync-versions.mjs && tsc -p tsconfig.json",
     "prepack": "node scripts/sync-versions.mjs && tsc -p tsconfig.json",
@@ -15,17 +19,26 @@
   },
   "dependencies": {
     "@almostjacked/hevy-mcp-core": "workspace:*",
+    "@hono/mcp": "^0.3.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "hono": "^4.12.31",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "typescript": "^5.5.0",
-    "vitest": "^2.0.0"
+    "vitest": "^2.0.0",
+    "wrangler": "^4.114.0"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT",
   "author": "AJ Wallace <ajwallacemusic@gmail.com>",
-  "repository": { "type": "git", "url": "git+https://github.com/almostjacked/hevy-mcp.git", "directory": "apps/mcp" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/almostjacked/hevy-mcp.git",
+    "directory": "apps/mcp"
+  },
   "mcpName": "io.github.almostjacked/hevy-mcp"
 }
