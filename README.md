@@ -3,6 +3,8 @@
 [![CI](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40almostjacked%2Fhevy-mcp)](https://www.npmjs.com/package/@almostjacked/hevy-mcp)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-io.github.almostjacked%2Fhevy--mcp-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=almostjacked)
+[![Install in Cursor](https://img.shields.io/badge/Cursor-Install_MCP-black)](https://cursor.com/install-mcp?name=hevy&config=eyJ0eXBlIjogImh0dHAiLCAidXJsIjogImh0dHBzOi8vaGV2eS1jb2FjaC5handhbGxhY2VtdXNpYy53b3JrZXJzLmRldi9tY3AifQ%3D%3D)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=hevy&config=%7B%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A%2F%2Fhevy-coach.ajwallacemusic.workers.dev%2Fmcp%22%7D)
 
 Unofficial MCP server for [Hevy](https://hevy.com). Design training programs in
 chat; your AI creates the routines directly in your Hevy account and analyzes
@@ -25,17 +27,31 @@ double-click, paste your key when prompted.
 ### Local (Claude Code / Cursor / any stdio client)
     claude mcp add hevy -e HEVY_API_KEY=<key> -- npx -y @almostjacked/hevy-mcp
 
-### Self-host (free, your own infra, works on mobile)
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/almostjacked/hevy-mcp)
-Then: `npx wrangler secret put AUTH_TOKEN` and `npx wrangler secret put HEVY_API_KEY`,
-and add YOUR worker URL as a connector with header `Authorization: Bearer <AUTH_TOKEN>`.
+### Self-host (free, your own infra)
 
-This works out of the box with clients that support custom headers (Claude
-Code: `claude mcp add --transport http hevy-selfhost <url> --header
-"Authorization: Bearer <token>"`, Cursor, etc.). claude.ai web/mobile custom
-connectors do not reliably support sending a custom auth header today — for
-those, front your worker with Cloudflare Access instead, or just use the
-hosted instance above.
+The published package ships the worker — no clone needed:
+
+```bash
+mkdir hevy-worker && cd hevy-worker && npm init -y
+npm install @almostjacked/hevy-mcp wrangler
+cat > wrangler.jsonc <<'EOF'
+{
+  "name": "hevy-mcp",
+  "main": "node_modules/@almostjacked/hevy-mcp/dist/worker.js",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"]
+}
+EOF
+npx wrangler deploy
+npx wrangler secret put AUTH_TOKEN     # any long random string — becomes your Bearer token
+npx wrangler secret put HEVY_API_KEY   # from hevy.com/settings?developer
+```
+
+Add your worker URL (`https://hevy-mcp.<your-subdomain>.workers.dev/mcp`) to clients
+that support custom headers — e.g. Claude Code:
+`claude mcp add --transport http hevy-selfhost <url> --header "Authorization: Bearer <token>"`.
+claude.ai custom connectors don't support custom auth headers; for claude.ai use the
+hosted instance above, or front your worker with Cloudflare Access.
 
 ## Tools
 
