@@ -12,6 +12,28 @@ importers:
         specifier: ^2.31.0
         version: 2.31.1(@types/node@22.20.1)
 
+  apps/mcp:
+    dependencies:
+      '@almostjacked/hevy-mcp-core':
+        specifier: workspace:*
+        version: link:../../packages/core
+      '@modelcontextprotocol/sdk':
+        specifier: ^1.29.0
+        version: 1.29.0(zod@4.4.3)
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.20.1
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.0.0
+        version: 2.1.9(@types/node@22.20.1)
+
   packages/core:
     dependencies:
       '@modelcontextprotocol/sdk':
