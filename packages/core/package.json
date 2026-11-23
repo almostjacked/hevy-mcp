@@ -1,7 +1,7 @@
 {
   "name": "@almostjacked/hevy-mcp-core",
   "version": "0.1.0",
-  "description": "Core for hevy-mcp: Hevy API client and MCP tool registrations (unofficial).",
+  "description": "Core for Almost Jacked for Hevy (@almostjacked/hevy-mcp): Hevy API client and MCP tool registrations (unofficial).",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

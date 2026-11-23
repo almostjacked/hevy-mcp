@@ -4,7 +4,7 @@ import { VERSION } from "./version.js";
 
 /** Build a fully-registered server for one Hevy API key (no transport attached). */
 export function buildServer(apiKey: string, keyInvalidHint?: string): McpServer {
-  const server = new McpServer({ name: "hevy-mcp", version: VERSION });
+  const server = new McpServer({ name: "almostjacked-hevy", version: VERSION });
   registerTools(server, createHevyClient(apiKey), { keyInvalidHint });
   return server;
 }

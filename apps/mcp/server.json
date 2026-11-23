@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.almostjacked/hevy-mcp",
-  "title": "Hevy (unofficial)",
-  "description": "Create Hevy routines and analyze your training from chat. Unofficial; BYO Hevy PRO API key.",
+  "title": "Almost Jacked for Hevy (unofficial)",
+  "description": "Create Hevy routines and analyze your training from chat. By Almost Jacked; unofficial.",
   "repository": {
     "url": "https://github.com/almostjacked/hevy-mcp",
     "source": "github"

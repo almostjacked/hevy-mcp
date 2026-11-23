@@ -56,4 +56,13 @@ describe("core tools contract", () => {
     expect(keyInvalidMessage(401, "check HEVY_API_KEY")).toContain("401");
     expect(keyInvalidMessage(401, "check HEVY_API_KEY")).toContain("check HEVY_API_KEY");
   });
+
+  test("auth-invalid message is OAuth-aware (no API-key wording for OAuth connections)", async () => {
+    const { keyInvalidMessage } = await import("../src/tools.js");
+    const m = keyInvalidMessage(401, "reconnect the connector", "oauth");
+    expect(m).toContain("401");
+    expect(m).toContain("reconnect the connector");
+    expect(m).not.toMatch(/API key/i);
+    expect(keyInvalidMessage(401, "x", "api-key")).toMatch(/API key/);
+  });
 });

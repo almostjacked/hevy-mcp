@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.2",
   "name": "hevy-mcp",
-  "display_name": "Hevy (unofficial)",
+  "display_name": "Almost Jacked for Hevy (unofficial)",
   "version": "0.1.0",
   "description": "Design training programs in chat and create the routines directly in your Hevy account. Unofficial; requires a Hevy PRO API key.",
   "author": {
