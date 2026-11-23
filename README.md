@@ -3,8 +3,8 @@
 [![CI](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40almostjacked%2Fhevy-mcp)](https://www.npmjs.com/package/@almostjacked/hevy-mcp)
 [![MCP Registry](https://img.shields.io/badge/MCP_Registry-io.github.almostjacked%2Fhevy--mcp-blue)](https://registry.modelcontextprotocol.io/v0/servers?search=almostjacked)
-[![Install in Cursor](https://img.shields.io/badge/Cursor-Install_MCP-black)](https://cursor.com/install-mcp?name=hevy&config=eyJ0eXBlIjogImh0dHAiLCAidXJsIjogImh0dHBzOi8vaGV2eS1jb2FjaC5handhbGxhY2VtdXNpYy53b3JrZXJzLmRldi9tY3AifQ%3D%3D)
-[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=hevy&config=%7B%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A%2F%2Fhevy-coach.ajwallacemusic.workers.dev%2Fmcp%22%7D)
+[![Install in Cursor](https://img.shields.io/badge/Cursor-Install_MCP-black)](https://cursor.com/install-mcp?name=hevy&config=eyJ0eXBlIjogImh0dHAiLCAidXJsIjogImh0dHBzOi8vaGV2eS1tY3AuYWxtb3N0amFja2VkLmNvbS9tY3AifQ%3D%3D)
+[![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=hevy&config=%7B%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A%2F%2Fhevy-mcp.almostjacked.com%2Fmcp%22%7D)
 
 Unofficial MCP server for [Hevy](https://hevy.com), by [Almost Jacked](https://github.com/almostjacked)
 (npm: `@almostjacked/hevy-mcp`). Design training programs in
@@ -18,7 +18,7 @@ the local/self-host options use a Hevy PRO API key (hevy.com/settings?developer)
 Add a custom connector in claude.ai → Settings → Connectors (name it
 "Almost Jacked for Hevy"):
 
-    https://hevy-coach.ajwallacemusic.workers.dev/mcp
+    https://hevy-mcp.almostjacked.com/mcp
 
 Click Connect and **Sign in with Hevy** — no API key needed. Prefer a key?
 Expand "Use a Hevy API key instead" on the same page (Hevy PRO).
