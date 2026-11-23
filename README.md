@@ -1,4 +1,4 @@
-# hevy-mcp
+# Almost Jacked for Hevy
 
 [![CI](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/almostjacked/hevy-mcp/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40almostjacked%2Fhevy-mcp)](https://www.npmjs.com/package/@almostjacked/hevy-mcp)
@@ -6,19 +6,22 @@
 [![Install in Cursor](https://img.shields.io/badge/Cursor-Install_MCP-black)](https://cursor.com/install-mcp?name=hevy&config=eyJ0eXBlIjogImh0dHAiLCAidXJsIjogImh0dHBzOi8vaGV2eS1jb2FjaC5handhbGxhY2VtdXNpYy53b3JrZXJzLmRldi9tY3AifQ%3D%3D)
 [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_MCP-0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=hevy&config=%7B%22type%22%3A%20%22http%22%2C%20%22url%22%3A%20%22https%3A%2F%2Fhevy-coach.ajwallacemusic.workers.dev%2Fmcp%22%7D)
 
-Unofficial MCP server for [Hevy](https://hevy.com). Design training programs in
+Unofficial MCP server for [Hevy](https://hevy.com), by [Almost Jacked](https://github.com/almostjacked)
+(npm: `@almostjacked/hevy-mcp`). Design training programs in
 chat; your AI creates the routines directly in your Hevy account and analyzes
-your logged training. Requires a Hevy PRO API key (hevy.com/settings?developer).
+your logged training. The hosted connector uses **Sign in with Hevy** (OAuth);
+the local/self-host options use a Hevy PRO API key (hevy.com/settings?developer).
 
 ## Use it
 
 ### Hosted (easiest — claude.ai web, mobile, desktop)
-Add a custom connector in claude.ai → Settings → Connectors:
+Add a custom connector in claude.ai → Settings → Connectors (name it
+"Almost Jacked for Hevy"):
 
     https://hevy-coach.ajwallacemusic.workers.dev/mcp
 
-You'll be prompted for your Hevy API key; it's stored encrypted in your own
-OAuth grant and sent only to api.hevyapp.com.
+Click Connect and **Sign in with Hevy** — no API key needed. Prefer a key?
+Expand "Use a Hevy API key instead" on the same page (Hevy PRO).
 
 ### Claude Desktop one-click
 Download [`hevy-mcp.mcpb`](https://github.com/almostjacked/hevy-mcp/releases),
@@ -73,5 +76,8 @@ hosted instance above, or front your worker with Cloudflare Access.
 ## Privacy Policy
 Your Hevy API key and training data pass through only to api.hevyapp.com.
 The stdio/.mcpb versions run entirely on your machine. The hosted instance
-stores nothing but your encrypted OAuth grant; disconnecting revokes it.
+stores only your encrypted OAuth grant and, if you used Sign in with Hevy, your
+Hevy access/refresh tokens (in Cloudflare Durable Object storage, encrypted at
+rest). Disconnecting revokes the grant; to cut off Hevy access entirely, also
+remove the app from your Hevy account.
 Nothing is logged or shared with third parties.

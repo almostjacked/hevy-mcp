@@ -22,6 +22,60 @@ describe("HevyClient", () => {
     expect(seenKey).toBe("secret-key");
   });
 
+  it("sends a Bearer token (and no api-key) for OAuth auth", async () => {
+    let headers: Record<string, string> = {};
+    const f = (async (_url: any, init?: RequestInit) => {
+      headers = init!.headers as Record<string, string>;
+      return new Response(JSON.stringify({ workout_count: 1 }));
+    }) as typeof fetch;
+    await new HevyClient({ accessToken: async () => "tok-1" }, f).getWorkoutCount();
+    expect(headers["Authorization"]).toBe("Bearer tok-1");
+    expect(headers["api-key"]).toBeUndefined();
+  });
+
+  it("accepts { apiKey } as well as a bare string", async () => {
+    let seenKey = "";
+    const f = (async (_url: any, init?: RequestInit) => {
+      seenKey = (init!.headers as Record<string, string>)["api-key"];
+      return new Response(JSON.stringify({ workout_count: 1 }));
+    }) as typeof fetch;
+    await new HevyClient({ apiKey: "obj-key" }, f).getWorkoutCount();
+    expect(seenKey).toBe("obj-key");
+  });
+
+  it("on OAuth 401, calls onUnauthorized and retries once with the new token", async () => {
+    let token = "stale";
+    let refreshed = 0;
+    const seen: string[] = [];
+    const f = (async (_url: any, init?: RequestInit) => {
+      const auth = (init!.headers as Record<string, string>)["Authorization"];
+      seen.push(auth);
+      if (auth === "Bearer stale") return new Response("invalid_token", { status: 401 });
+      return new Response(JSON.stringify({ workout_count: 3 }));
+    }) as typeof fetch;
+    const c = new HevyClient({
+      accessToken: async () => token,
+      onUnauthorized: async () => { refreshed++; token = "fresh"; },
+    }, f);
+    expect(await c.getWorkoutCount()).toBe(3);
+    expect(refreshed).toBe(1);
+    expect(seen).toEqual(["Bearer stale", "Bearer fresh"]);
+  });
+
+  it("does not loop: a second OAuth 401 after refresh surfaces as HevyApiError", async () => {
+    let refreshed = 0;
+    const f = (async () => new Response("invalid_token", { status: 401 })) as typeof fetch;
+    const c = new HevyClient({ accessToken: async () => "t", onUnauthorized: async () => { refreshed++; } }, f);
+    await expect(c.getWorkoutCount()).rejects.toMatchObject({ status: 401 });
+    expect(refreshed).toBe(1);
+  });
+
+  it("reports its auth kind", () => {
+    expect(new HevyClient("k").authKind).toBe("api-key");
+    expect(new HevyClient({ apiKey: "k" }).authKind).toBe("api-key");
+    expect(new HevyClient({ accessToken: async () => "t" }).authKind).toBe("oauth");
+  });
+
   it("validateKey returns false on 401 and true on 200", async () => {
     expect(await new HevyClient("bad", fakeFetch({ "/v1/workouts/count": () => ({ status: 401, body: "unauthorized" }) })).validateKey()).toBe(false);
     expect(await new HevyClient("good", fakeFetch({ "/v1/workouts/count": () => ({ body: { workout_count: 5 } }) })).validateKey()).toBe(true);

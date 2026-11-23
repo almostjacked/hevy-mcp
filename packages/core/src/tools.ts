@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { HevyClient, HevyApiError, type ExerciseTemplate } from "./hevy-client.js";
+import { HevyClient, HevyApiError, type ExerciseTemplate, type HevyAuth, type HevyAuthKind } from "./hevy-client.js";
 import { searchExercises } from "./exercises.js";
 import { buildRoutinePayload } from "./routine-builder.js";
 import { summarizeWorkout, groupExerciseHistory, scanWorkouts } from "./workouts.js";
@@ -37,11 +37,15 @@ const ExerciseSchema = z.object({
 
 const READ = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true } as const;
 
-export function createHevyClient(apiKey: string): HevyClient {
-  return new HevyClient(apiKey);
+export function createHevyClient(auth: HevyAuth): HevyClient {
+  return new HevyClient(auth);
 }
 
-export function keyInvalidMessage(status: number, hint: string): string {
+export function keyInvalidMessage(status: number, hint: string, kind: HevyAuthKind = "api-key"): string {
+  if (kind === "oauth") {
+    return `The Hevy connection is no longer authorized (Hevy returned HTTP ${status}). ${hint} ` +
+      "The user may have revoked access in Hevy, or the sign-in expired.";
+  }
   return `Your Hevy API key is no longer valid (Hevy returned HTTP ${status}). ${hint} ` +
     "The user can check their key at hevy.com/settings?developer.";
 }
@@ -58,7 +62,9 @@ export function registerTools(
   client: HevyClient,
   opts: RegisterOptions = {},
 ): void {
-  const hint = opts.keyInvalidHint ?? "Update your Hevy API key where you configured this server.";
+  const hint = opts.keyInvalidHint ?? (client.authKind === "oauth"
+    ? "Reconnect Hevy where you configured this server."
+    : "Update your Hevy API key where you configured this server.");
 
   let templates: ExerciseTemplate[] | null = null;
   const library = async (): Promise<ExerciseTemplate[]> => {
@@ -75,7 +81,7 @@ export function registerTools(
       return ok(await fn());
     } catch (e) {
       if (e instanceof HevyApiError && (e.status === 401 || e.status === 403)) {
-        return err(keyInvalidMessage(e.status, hint));
+        return err(keyInvalidMessage(e.status, hint, client.authKind));
       }
       if (e instanceof Error) return err(e.message);
       return err(String(e));

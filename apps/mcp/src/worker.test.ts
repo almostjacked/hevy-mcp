@@ -28,7 +28,7 @@ describe("token-HTTP worker", () => {
   test("200 initialize with token", async () => {
     const res = await post({ authorization: "Bearer sekret" });
     expect(res.status).toBe(200);
-    expect(await res.text()).toContain("hevy-mcp");
+    expect(await res.text()).toContain("almostjacked-hevy");
   });
   test("405 GET/DELETE", async () => {
     for (const method of ["GET", "DELETE"]) {

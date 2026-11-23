@@ -93,14 +93,41 @@ export class HevyApiError extends Error {
   }
 }
 
+/**
+ * How the client authenticates to api.hevyapp.com.
+ * - a bare string or `{ apiKey }`: the Hevy PRO personal key, sent as the `api-key` header.
+ * - `{ accessToken }`: a Hevy OAuth access token (developers.hevy.com), sent as
+ *   `Authorization: Bearer`. `accessToken` is called per request so the caller
+ *   can hand out a refreshed token; `onUnauthorized` (optional) is called once on
+ *   a 401 to force a refresh before a single retry.
+ */
+export type HevyAuth =
+  | string
+  | { apiKey: string }
+  | { accessToken: () => Promise<string>; onUnauthorized?: () => Promise<void> };
+
+export type HevyAuthKind = "api-key" | "oauth";
+
 export class HevyClient {
   private timestamps: number[] = [];
+  private auth: Exclude<HevyAuth, string>;
 
   constructor(
-    private apiKey: string,
+    auth: HevyAuth,
     private fetchFn: typeof fetch = (input, init) => globalThis.fetch(input, init),
     private maxRequestsPerMinute = 30,
-  ) {}
+  ) {
+    this.auth = typeof auth === "string" ? { apiKey: auth } : auth;
+  }
+
+  get authKind(): HevyAuthKind {
+    return "apiKey" in this.auth ? "api-key" : "oauth";
+  }
+
+  private async authHeaders(): Promise<Record<string, string>> {
+    if ("apiKey" in this.auth) return { "api-key": this.auth.apiKey };
+    return { Authorization: `Bearer ${await this.auth.accessToken()}` };
+  }
 
   private async request(method: string, path: string, body?: unknown): Promise<any> {
     const now = Date.now();
@@ -110,11 +137,19 @@ export class HevyClient {
     }
     this.timestamps.push(now);
 
-    const res = await this.fetchFn(BASE + path, {
-      method,
-      headers: { "api-key": this.apiKey, "Content-Type": "application/json" },
-      body: body === undefined ? undefined : JSON.stringify(body),
-    });
+    const send = async () =>
+      this.fetchFn(BASE + path, {
+        method,
+        headers: { ...(await this.authHeaders()), "Content-Type": "application/json" },
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    let res = await send();
+    // OAuth access tokens expire hourly; on a 401 force one refresh and retry once.
+    if (res.status === 401 && "accessToken" in this.auth && this.auth.onUnauthorized) {
+      await res.body?.cancel();
+      await this.auth.onUnauthorized();
+      res = await send();
+    }
     const text = await res.text();
     if (!res.ok) throw new HevyApiError(res.status, text.slice(0, 500), path);
     return text ? JSON.parse(text) : null;
