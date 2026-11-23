@@ -1,0 +1,7 @@
+# @almostjacked/hevy-mcp-core
+
+## 0.2.0
+
+### Minor Changes
+
+- 66b467c: HevyClient now accepts Hevy OAuth access tokens (`{ accessToken, onUnauthorized? }`), sent as `Authorization: Bearer`, alongside the existing API key (bare string or `{ apiKey }`). An OAuth 401 triggers one refresh-and-retry. Auth-failure tool errors no longer mention API keys for OAuth connections.
