@@ -1,6 +1,6 @@
 {
   "name": "@almostjacked/hevy-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Almost Jacked for Hevy — unofficial MCP server for Hevy (stdio + self-host worker). Bring your own Hevy PRO API key.",
   "type": "module",
   "bin": {
